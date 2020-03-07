@@ -1,6 +1,14 @@
 import cv2
 import numpy as np
-from random import randint
+from random import randint, shuffle
+
+def isSorted(l):
+    previous = l[0]
+    for i in range(1, len(l)):
+        if l[i] < previous:
+            return False
+        previous = l[i]
+    return True
 
 def insertion_sort(l):
     for index in range(1, len(l)):
@@ -21,15 +29,21 @@ def selection_sort(l):
         l[i], l[min_ind] = l[min_ind], l[i]
         yield l
 
+def bogo_sort(l):
+    while not isSorted(l):
+        shuffle(l)
+        yield l 
+    yield l 
+
 #generate array, window height and width and the empty canvas for drawing with an
 #empty copy to reset it every frame
-arr = [randint(0, 500) for i in range(0, 50)]
+arr = [randint(0, 500) for i in range(0, 30)]
 HEIGHT = max(arr)+1
 WIDTH = len(arr) * 10
 img = np.zeros((HEIGHT, WIDTH, 3), np.uint8)
 reset = img.copy()
 
-steps = selection_sort(arr)
+steps = insertion_sort(arr)
 
 for step in steps:
     for i in range(len(arr)):
