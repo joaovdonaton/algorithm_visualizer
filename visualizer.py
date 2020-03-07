@@ -15,10 +15,11 @@ def insertion_sort(l):
         k = l[index]
         j = index-1
         while j >= 0 and k < l[j]:
-            l[j+1] = l[j]
+            l[j+1], l[j] = l[j], l[j+1]
             j-=1
             yield l
         l[j+1] = k
+        yield l
 
 def selection_sort(l):
     for i in range(len(l)):  
@@ -37,7 +38,7 @@ def bogo_sort(l):
 
 #generate array, window height and width and the empty canvas for drawing with an
 #empty copy to reset it every frame
-arr = [randint(0, 500) for i in range(0, 100)]
+arr = [randint(0, 600) for i in range(100)]
 HEIGHT = max(arr)+1
 WIDTH = len(arr) * 10
 img = np.zeros((HEIGHT, WIDTH, 3), np.uint8)
