@@ -38,8 +38,8 @@ def bogo_sort(l):
 
 #generate array, window height and width and the empty canvas for drawing with an
 #empty copy to reset it every frame
-arr = [randint(0, 600) for i in range(100)]
-HEIGHT = max(arr)+1
+arr = [randint(0, 600) for i in range(50)]
+HEIGHT = max(arr) + 1
 WIDTH = len(arr) * 10
 img = np.zeros((HEIGHT, WIDTH, 3), np.uint8)
 reset = img.copy()
@@ -51,22 +51,29 @@ steps = insertion_sort(arr)
 #prev_step stores the array before the current "step" in the sorting algorithms
 #step = whenever the algorithm changes the array
 #different is a list of indexes that have changed since the previous step
-prev_step, different = arr, []
+prev_step, different = arr.copy(), []
 for step in steps:
+    print(step)
     for i in range(len(arr)):
         if step[i] != prev_step[i]:
             different.append(i)
 
     for i in range(len(arr)):
         if i in different:
-            img[HEIGHT:HEIGHT-arr[i]:-1, i*10:i*10+5] = 0, 0, 200
+            img[HEIGHT:HEIGHT-step[i]:-1, i*10:i*10+5] = 0, 0, 200
         else:
-            img[HEIGHT:HEIGHT-arr[i]:-1, i*10:i*10+5] = 255, 255, 255
+            img[HEIGHT:HEIGHT-step[i]:-1, i*10:i*10+5] = 255, 255, 255
         cv2.imshow('', img)
     cv2.waitKey(1)
     img = reset.copy()
     #reset different and set prev_step
     prev_step, different = step.copy(), []
+
+#play an ending "animation"
+for i in range(len(arr)):
+    img[HEIGHT:HEIGHT-prev_step[i]:-1, i*10:i*10+5] = 255, 255, 255
+    cv2.imshow('', img)
+    cv2.waitKey(50)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
